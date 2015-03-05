@@ -69,3 +69,30 @@ function ding_toggle_format_render_link() {
 
   return $format_link;
 }
+
+/**
+ * Implements hook_preprocess().
+ */
+function ding_toggle_format_preprocess(&$variables, $hook) {
+  $search_result = arg(0) == 'search' && arg(1) == 'ting';
+  $user_page = arg(0) == 'user' && arg(2) == 'status';
+
+  // Force toggle format being inserted to search result and
+  // user pages.
+  if (!$search_result && !$user_page) {
+    return;
+  }
+
+  if ($hook == '25_50_25') {
+    $block = module_invoke('ding_toggle_format', 'block_view', '');
+    $toggle_format_markup =
+      '<div class="panel-pane pane-block pane-ding-toggle-format-toggle">' .
+      '<div class="pane-content">' .
+      render($block['content']) .
+      '</div>' .
+      '</div>';
+
+    $existing_content = $variables['content']['main_content'];
+    $variables['content']['main_content'] = $toggle_format_markup . $existing_content;
+  }
+}
