@@ -3,7 +3,7 @@
   Drupal.behaviors.toggleFormat = {
     attach: function(context, settings) {
       $('#ding-toggle-format', context).click(function() {
-        var toFormat = ($.cookie('ding_toggle_format') == 'short') ? 'long': 'short';
+        var toFormat = (Cookies.get('ding_toggle_format') == 'short') ? 'long': 'short';
         Drupal.setFormat(toFormat);
         return false;
       });
@@ -13,7 +13,7 @@
   Drupal.behaviors.readyFormat = {
     attach: function(context, settings) {
       $('#ding-toggle-format', context).ready(function() {
-        var format = ($.cookie('ding_toggle_format')) ? $.cookie('ding_toggle_format') : 'long';
+        var format = (Cookies.get('ding_toggle_format')) ? Cookies.get('ding_toggle_format') : 'long';
         Drupal.setFormat(format);
       });
     }
@@ -26,10 +26,9 @@
     $('li.search-result, div.material-item').removeClass('ding-format-long');
     $('li.search-result, div.material-item').removeClass('ding-format-short');
     $('li.search-result, div.material-item').addClass('ding-format-' + format);
-    $.cookie('ding_toggle_format', format, {
+    Cookies('ding_toggle_format', format, {
       expires: 30
     });
   };
 
 } (jQuery));
-
